@@ -1,70 +1,106 @@
 import streamlit as st
 import pandas as pd
 
-# Page setup
+# ---------------- PAGE CONFIG -----------give-----
 st.set_page_config(
-    page_title="AI Workflow Report",
-    layout="wide"
+    page_title="AI Workflow & Report Generator",
+    layout="centered"
 )
 
-# Title
+# ---------------- TITLE ----------------
 st.title("📊 AI Workflow & Report Generator")
+st.caption("Upload a CSV file and generate business insights")
 
-st.write(
-    "Upload a CSV file and generate AI-based business reports instantly."
-)
+st.divider()
 
-# Sidebar
-st.sidebar.title("Menu")
-st.sidebar.info("Upload data and generate reports")
+# ---------------- FILE UPLOADER ----------------
+st.subheader("📁 Upload Your Data")
 
-# File uploader
 uploaded_file = st.file_uploader(
-    "📂 Upload CSV File",
+    "Upload a CSV file only",
     type=["csv"]
 )
 
-# If file uploaded
-if uploaded_file is not None:
+if uploaded_file:
     df = pd.read_csv(uploaded_file)
 
+    st.success("File uploaded successfully!")
+
     st.subheader("🔍 Data Preview")
-    st.dataframe(df.head())
-
-    # Buttons
-    st.subheader("⚡ Generate Report")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        trend_btn = st.button("📈 Trends")
-
-    with col2:
-        anomaly_btn = st.button("🚨 Anomalies")
-
-    with col3:
-        action_btn = st.button("🎯 Business Actions")
-
-    # Outputs
-    if trend_btn:
-        st.success("📈 The data shows a stable overall trend.")
-
-    if anomaly_btn:
-        st.warning("🚨 Some unusual values have been detected in the dataset.")
-
-    if action_btn:
-        st.info("""
-        🎯 Recommended Business Actions:
-        1. Analyze periods with low performance  
-        2. Investigate the causes of detected anomalies  
-        3. Focus resources on high-performing areas  
-        """)
+    st.dataframe(df.head(), use_container_width=True)
 
 else:
-    st.warning("⚠️ Please upload a CSV file to continue.")
+    st.info("Please upload a CSV file to continue.")
 
-# Limitations
 st.divider()
-st.caption(
-    "Note: AI-generated insights are for guidance only and should not be considered final decisions."
-)
+
+# ---------------- BUTTONS ----------------
+st.subheader("⚙️ Generate Insights")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    btn_summary = st.button("📌 Summarize Trends")
+
+with col2:
+    btn_anomaly = st.button("🚨 Identify Anomalies")
+
+with col3:
+    btn_actions = st.button("💡 Suggest Actions")
+
+st.divider()
+
+# ---------------- OUTPUT CONTAINERS ----------------
+summary_container = st.container()
+anomaly_container = st.container()
+action_container = st.container()
+
+# ---------------- OUTPUT: SUMMARY ----------------
+with summary_container:
+    if btn_summary:
+        if uploaded_file:
+            st.subheader("📌 Trend Summary")
+            st.info(
+                "- Overall trends will appear here\n"
+                "- Example: Sales increased over time\n"
+                "- Example: High-performing products identified"
+            )
+        else:
+            st.error("Please upload a CSV file first.")
+
+# ---------------- OUTPUT: ANOMALIES ----------------
+with anomaly_container:
+    if btn_anomaly:
+        if uploaded_file:
+            st.subheader("🚨 Anomaly Report")
+            st.warning(
+                "- Unusual patterns detected\n"
+                "- Example: Sudden drop in sales\n"
+                "- Example: Unexpected spikes"
+            )
+        else:
+            st.error("Please upload a CSV file first.")
+
+# ---------------- OUTPUT: ACTIONS ----------------
+with action_container:
+    if btn_actions:
+        if uploaded_file:
+            st.subheader("💡 Recommended Business Actions")
+            st.success(
+                "1. Improve forecasting strategy\n"
+                "2. Investigate abnormal values\n"
+                "3. Optimize business operations"
+            )
+        else:
+            st.error("Please upload a CSV file first.")
+
+# ---------------- WARNINGS & LIMITATIONS ----------------
+st.divider()
+st.subheader("⚠️ Warnings & Limitations")
+
+st.markdown("""
+- This tool provides **AI-generated insights**, not professional advice.
+- Results depend on the **quality of uploaded data**.
+- Anomalies are **indicators**, not confirmed errors.
+- Large datasets may increase processing time.
+""")
