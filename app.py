@@ -12,11 +12,11 @@ st.title("📊 AI Workflow & Report Generator")
 st.caption("Upload a CSV file and generate business insights")
 
 st.divider()
+st.sidebar.title("Menu")
+st.sidebar.info("Upload data and generate reports")
 
 # ---------------- FILE UPLOADER ----------------
 st.subheader("📁 Upload Your Data")
-st.sidebar.title("Menu")
-st.sidebar.info("Upload data and generate reports")
 
 uploaded_file = st.file_uploader(
     "Upload a CSV file only",
