@@ -4,7 +4,7 @@ import pandas as pd
 # ---------------- PAGE CONFIG -----------give-----
 st.set_page_config(
     page_title="AI Workflow & Report Generator",
-    layout="centered"
+    layout="wide"
 )
 
 # ---------------- TITLE ----------------
@@ -15,6 +15,8 @@ st.divider()
 
 # ---------------- FILE UPLOADER ----------------
 st.subheader("📁 Upload Your Data")
+st.sidebar.title("Menu")
+st.sidebar.info("Upload data and generate reports")
 
 uploaded_file = st.file_uploader(
     "Upload a CSV file only",
